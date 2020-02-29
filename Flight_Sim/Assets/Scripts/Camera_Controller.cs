@@ -7,22 +7,28 @@ using UnityEngine.UI;
 public class Camera_Controller : MonoBehaviour
 {
     #region Variables
-    [Space(10)]
+    [Space]
     [Header("Object Refference :-")]
     [SerializeField] private Transform _aircraft;
     [SerializeField] private Camera _playerCam;
     [SerializeField] private Transform _boreAim;
     [SerializeField] private Transform _camAim;
-    [Space(10)]
-    [Header("Accelerometer Tweak :-")]
+    [Space]
+    [Header("Text Spectre :-")]
     [SerializeField] private Text _initialAcceleration;
     [SerializeField] private Text _currentAcceleration;
     [SerializeField] private Text _currentRotation;
-    [Space(10)]
-    [Header("")]
+    [Space]
+    [Header("Accelerometer Tweaks :-")]
+    [SerializeField] [Range(0, 1f)] private float _smooth = 0.4f;
+    [SerializeField] [Range(0, 100f)] private float _sensitivity = 6f;
+    [Space]
+    [Header("Game HUD :-")]
     [SerializeField] private RectTransform _boresight;
-    [SerializeField] private float _smooth = 0.4f;
-    [SerializeField] private float _sensitivity = 6f;
+    [Space]
+    [Header("Camera Tweaks :-")]
+    [SerializeField] [Range(0, 1f)] private float _rotationSlerp = 0.5f;
+
     private Vector3 _currentAccln, _initialAccln;
     private Vector3 _newRotation;
     #endregion
@@ -98,7 +104,7 @@ public class Camera_Controller : MonoBehaviour
         Debug.DrawRay(_aircraft.transform.position, directionToFace, Color.red);
 
         Quaternion planeRotation = Quaternion.LookRotation(directionToFace);
-        _aircraft.rotation = Quaternion.Slerp(_aircraft.rotation, planeRotation, Time.deltaTime * 0.5f);
+        _aircraft.rotation = Quaternion.Slerp(_aircraft.rotation, planeRotation, Time.deltaTime * _rotationSlerp);
 
         //_aircraft.rotation = Quaternion.LookRotation(directionToFace);
         //_aircraft.rotation = Quaternion.Slerp(_aircraft.rotation, planeRotation, Time.deltaTime * 0.5f);
