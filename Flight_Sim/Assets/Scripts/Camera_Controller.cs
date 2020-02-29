@@ -3,17 +3,23 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-[ExecuteInEditMode]
+//[ExecuteInEditMode]
 public class Camera_Controller : MonoBehaviour
 {
     #region Variables
+    [Space(10)]
+    [Header("Object Refference :-")]
     [SerializeField] private Transform _aircraft;
     [SerializeField] private Camera _playerCam;
     [SerializeField] private Transform _boreAim;
     [SerializeField] private Transform _camAim;
+    [Space(10)]
+    [Header("Accelerometer Tweak :-")]
     [SerializeField] private Text _initialAcceleration;
     [SerializeField] private Text _currentAcceleration;
     [SerializeField] private Text _currentRotation;
+    [Space(10)]
+    [Header("")]
     [SerializeField] private RectTransform _boresight;
     [SerializeField] private float _smooth = 0.4f;
     [SerializeField] private float _sensitivity = 6f;
@@ -48,7 +54,7 @@ public class Camera_Controller : MonoBehaviour
         _newRotation.x = Mathf.Clamp(_currentAccln.x * _sensitivity, -1f, 1f);
         _newRotation.z = Mathf.Clamp(_currentAccln.z * _sensitivity, -1f, 1f);
 
-        transform.Rotate(-_newRotation.z, Mathf.Clamp(_newRotation.x, -10f, 10f), 0f, Space.Self);
+        transform.Rotate(-_newRotation.z, _newRotation.x, 0f, Space.Self);
 
         _currentRotation.text = "Current Rotation :-\n" 
             + transform.localEulerAngles.x.ToString("#.##") 
@@ -87,12 +93,15 @@ public class Camera_Controller : MonoBehaviour
 
     private void aircraftRotation()
     {
-        Vector3 directionToFace = _camAim.position - _boreAim.position;
+        Vector3 directionToFace = _camAim.position - _aircraft.position;
 
-        Debug.DrawLine(_aircraft.transform.position, directionToFace, Color.red);
+        Debug.DrawRay(_aircraft.transform.position, directionToFace, Color.red);
 
         Quaternion planeRotation = Quaternion.LookRotation(directionToFace);
         _aircraft.rotation = Quaternion.Slerp(_aircraft.rotation, planeRotation, Time.deltaTime * 0.5f);
+
+        //_aircraft.rotation = Quaternion.LookRotation(directionToFace);
+        //_aircraft.rotation = Quaternion.Slerp(_aircraft.rotation, planeRotation, Time.deltaTime * 0.5f);
     }
     #endregion
 }
