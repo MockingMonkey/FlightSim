@@ -9,3 +9,4 @@ We are working on it.
 2. cloud graphics
 3. thunder level to be added.
 4. want to improve intro part of the game.
+5. Want to some missions type feature: like some clue wise.
